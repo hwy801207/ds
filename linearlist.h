@@ -1,5 +1,8 @@
 #ifndef LINEARLIST
 #define LINEARLIST
+#include <iostream>
+using std::ostream;
+
 template <class T>
 class linearList{
 public:

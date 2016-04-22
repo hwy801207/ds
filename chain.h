@@ -5,10 +5,13 @@
 #include "chainnode.h"
 #include <ostream>
 #include <sstream>
+#include <cassert>
 
 using std::ostream;
 using std::ostringstream;
-class chain: public linearList
+using std::cout; using std::endl;
+template<class T>
+class chain: public linearList<T>
 {
 public:
     //构造函数
@@ -35,13 +38,13 @@ protected:
  *
 */
 template <class T>
-chain(int initialCapacity){
+chain<T>::chain(int initialCapacity){
     if (initialCapacity < 1){
         ostringstream s;
         s << "initial capacity = " << initialCapacity << "must be > 0";
     }
         listSize = 0;
-        firtNode = NULL;
+        firstNode = NULL;
 }
 
 template<class T>
@@ -89,7 +92,7 @@ template<class T>
 int chain<T>::indexOf(const T &theElement) const{
     chainNode<T>* currentNode = firstNode;
     int index = 0;
-    while (currentNode != NULl &&
+    while (currentNode != NULL &&
            currentNode->element != theElement){
        currentNode = currentNode->next;
        index++;
@@ -130,7 +133,7 @@ void chain<T>::insert(int theIndex, const T &theElement){
         cout << s.str()<< endl;
     }
 
-    if (theIndex = 0)
+    if (theIndex == 0)
         firstNode = new chainNode<T>(theElement, firstNode);
     else{
         chainNode<T> *p = firstNode;
@@ -156,5 +159,11 @@ template<class T>
 ostream& operator<<(ostream& out, const chain<T>& x){
     x.output(out);
     return out;
+}
+
+template<class T>
+void chain<T>::checkIndex(int theIndex) const{
+    assert(theIndex < listSize);
+    assert(0 <= theIndex);
 }
 #endif // CHAIN_H

@@ -10,5 +10,6 @@ SOURCES += main.cpp \
 HEADERS += \
     chainnode.h \
     linearlist.h \
-    chain.h
+    chain.h \
+    extendedlinearlist.h
 
