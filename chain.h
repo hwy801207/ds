@@ -27,6 +27,14 @@ public:
     void erase(int theIndex);
     void insert(int theIndex, const T& theElement);
     void output(ostream &out) const;
+    //题2
+    void setSize(int theSize);
+    //题3
+    T set(int theIndex, const T&theElement);
+    //题4
+    void removeRange(int fromIndex, int toIndex);
+    //题5
+    int lastIndexOf(T theElement) const;
 protected:
     void checkIndex(int theIndex) const;
     chainNode<T>* firstNode;
@@ -45,6 +53,40 @@ chain<T>::chain(int initialCapacity){
     }
         listSize = 0;
         firstNode = NULL;
+}
+
+template<class T>
+int chain<T>::lastIndexOf(T theElement) const{
+    if (indexOf(theElement) == -1) return -1;
+    chainNode<T>* tp = firstNode;
+    int index = 0;
+    int count = 0;
+    while(tp != nullptr){
+       if (tp->element == theElement){
+           index = count;
+       }
+       tp = tp->next;
+       count++;
+    }
+
+    return index;
+}
+template<class T>
+void chain<T>::removeRange(int fromIndex, int toIndex){
+    checkIndex(fromIndex);
+    checkIndex(toIndex);
+    while(toIndex >= fromIndex){
+        erase(toIndex);
+        --toIndex;
+    }
+}
+template<class T>
+T chain<T>::set(int theIndex, const T &theElement){
+    checkIndex(theIndex);
+    T ret = get(theIndex);//返回引用
+    insert(theIndex, theElement);
+    erase(theIndex+1); //删除导致引用失效
+    return ret;
 }
 
 template<class T>
@@ -165,5 +207,18 @@ template<class T>
 void chain<T>::checkIndex(int theIndex) const{
     assert(theIndex < listSize);
     assert(0 <= theIndex);
+}
+/**
+  题2
+ *设置线性表的大小为theSize 若大于线性表大小则删除多余数据
+ *
+ * 若从最后删除算法的复杂度为O(listSize - theSize)
+ */
+template<class T>
+void chain<T>::setSize(int theSize){
+    assert(theSize > 0);
+    while(theSize < listSize) {
+        erase(listSize-1);
+    }
 }
 #endif // CHAIN_H
